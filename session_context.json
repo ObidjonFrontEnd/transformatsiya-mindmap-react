@@ -1,0 +1,117 @@
+{
+  "meta": {
+    "title": "Transformatsiya mindmap — Vercel + GitHub + Redis",
+    "source_session": "https://claude.ai/code/session_01XPgzWGU7zkrn8i3qe8mc7n",
+    "exported_at": "2026-11-11T17:06:00+05:00",
+    "language": "uz (javoblar o'zbek lotinida; sayt interfeysi o'zbek kirillida)",
+    "note": "Parol va tokenlar bu faylga kiritilmagan."
+  },
+  "user_working_style": [
+    "Har javob boshida tushunganini qisqa qaytarib yozish, keyin savol-javob bilan davom etish",
+    "'Hali kod yozma' deyilsa — faqat reja va savollar, hech narsa o'zgartirilmaydi",
+    "Yangi narsada avval o'zing to'liq birinchi variantni taklif qil, keyin birga tuzatamiz",
+    "Parol/tokenlar kodga yoki ochiq repozitoriyga yozilmaydi"
+  ],
+  "project": {
+    "what": "MegaBuild transformatsiya rejasining vizual xaritasi (mindmap): yo'nalishlar, bo'limlar, vazifalar va ularning holati",
+    "directions": {
+      "boshqaruv": "Бошқарув",
+      "moliya": "Молия ва бухгалтерия",
+      "hr": "HR",
+      "qurilish": "Қурилиш",
+      "taminot": "Таъминот",
+      "savdo": "Савдо",
+      "xavfsizlik": "Хавфсизлик",
+      "xotira": "Ташкилот хотираси"
+    },
+    "task_count": 324,
+    "task_shape": "DATA[].tasks = [id ('3.10'), bo'lim raqami (1..5), qisqa nom, to'liq nom]",
+    "statuses": ["bajarildi", "jarayonda", "kechikmoqda", "rejada", "tasdiqlanmagan"],
+    "scoring": {
+      "bajarildi": 1,
+      "tasdiqlanmagan": 0.9,
+      "jarayonda": 0,
+      "kechikmoqda": 0,
+      "rejada": 0,
+      "formula": "foiz = (bajarildi*1 + tasdiqlanmagan*0.9) / jami vazifalar",
+      "open": "jarayonda = 0.3 qilinsinmi — hal qilinmagan"
+    },
+    "data_source": {
+      "name": "Transformatsiya_hisobot_Oktyabr_2026_v6",
+      "url": "https://docs.google.com/spreadsheets/d/1mBAefvMsG6Oyi6DtzyyAXA6Na9tQaLzKILXhyrqMMiM",
+      "sheets": ["Umumiy", "Operatsion boshqaruv", "Taʼminot", "Moliya", "Tashkilot Xotirasi", "HR", "Qurilish", "Xavfsizlik", "Savdo", "12-17.10", "Buxgalteriya"],
+      "grade_scale": {"0": "qilinmadi", "0.3": "jarayonda", "0.5": "tekshiruvda", "1": "qabul qilindi"},
+      "mapping_rule_used": "1.0→bajarildi; 0.5–0.95→tasdiqlanmagan; 0.3→jarayonda; 0 va muddati o'tgan→kechikmoqda; 0 va muddati kelmagan→rejada; jadvalda yo'q→avvalgi holat"
+    }
+  },
+  "infrastructure": {
+    "github": {
+      "repo": "ObidjonFrontEnd/transformatsiya-mindmap",
+      "url": "https://github.com/ObidjonFrontEnd/transformatsiya-mindmap",
+      "visibility": "public",
+      "branch": "main"
+    },
+    "vercel": {
+      "site": "https://transformatsiya-mindmap.vercel.app",
+      "team": "Obidjon's projects (obidjons-projects-4a87c838), Hobby",
+      "project": "transformatsiya-mindmap",
+      "framework_preset": "Other (build yo'q, statik + /api funksiyalar)",
+      "auto_deploy": "main'ga har bir push",
+      "gotcha": "Env o'zgarsa qayta deploy kerak; dashboard'dagi Redeploy ishlamadi — bo'sh commit push qilindi"
+    },
+    "database": {
+      "provider": "Upstash Redis (Vercel Marketplace, Free, 500k buyruq/oy)",
+      "keys": {
+        "holatlar": "HASH: maydon = yo'nalish kaliti, qiymat = JSON {taskId: status}. HOLATLAR massividan ustun turadi",
+        "tarix": "LIST: {vaqt, user, dir, changes:[{id, eski, yangi}]}, oxirgi 500 ta",
+        "login_fail:<ip>": "xato urinishlar hisoblagichi, 15 daqiqa"
+      }
+    },
+    "env_vars": {
+      "KV_REST_API_URL": "Upstash integratsiyasi qo'shgan",
+      "KV_REST_API_TOKEN": "Upstash integratsiyasi qo'shgan",
+      "ADMIN_LOGIN": "superadmin",
+      "ADMIN_PASSWORD": "secret — foydalanuvchi o'zi kiritgan, bu yerda yo'q"
+    }
+  },
+  "code": {
+    "index.html": "Butun front bitta faylda: CSS, HOLATLAR (boshlang'ich holatlar), DATA (tuzilma), SVG mindmap, tablar, KPI, login oynasi, Сақлаш/Бекор қилиш, /api/state dan holatlarni yuklash",
+    "api/_lib.js": "Upstash REST chaqiruvi, HMAC sessiya (cookie mm_s, HttpOnly, Secure, SameSite=Strict, 7 kun; kalit = sha256(KV token + parol))",
+    "api/login.js": "POST {login, password} → cookie; 10 xato/15 daq → 429",
+    "api/logout.js": "Cookie'ni o'chiradi",
+    "api/state.js": "GET — hammaga holatlar + user; POST {dir, holatlar} — faqat login, validatsiya, tarixga yozish",
+    "known_issues": [
+      "POST /api/state butun yo'nalishni yozadi → bir vaqtda ikki kishi tahrirlasa, oxirgi saqlagan oldingisini o'chiradi",
+      "Boshqa foydalanuvchilar o'zgarishni ko'rishi uchun sahifani yangilashi kerak",
+      "DATA ichida Moliya 5.1–5.13 to'liq nomlari buzilgan harflar bilan",
+      "Jadvaldagi Ta'minot Oktyabr vazifalari mindmap Ta'minot vazifalariga mos kelmaydi → 0%",
+      "Jadvaldagi HR varag'i sarlavhasida xato: 'Tashkilot Xotirasi' deb yozilgan"
+    ]
+  },
+  "timeline": [
+    {"step": 1, "request": "JSON'dan o'qiydigan statik saytni Vercel'ga joylash", "result": "Oddiy index.html + data.json namunasi berildi"},
+    {"step": 2, "request": "Tayyor mindmap'dagi HOLATLAR massivini Google Sheets'dagi Oktyabr hisobotiga moslash (kodga tegmasdan)", "result": "89 vazifa holati yangilandi"},
+    {"step": 3, "request": "Yangi GitHub repozitoriy yaratib, yuklash", "result": "ObidjonFrontEnd/transformatsiya-mindmap (public)"},
+    {"step": 4, "request": "Git orqali Vercel'ga chiqarish", "result": "transformatsiya-mindmap.vercel.app ishga tushdi"},
+    {"step": 5, "request": "Boshqaruv yo'nalishini asl v1.2 fayldagi holatga qaytarish", "result": "1.2, 2.3, 5.1, 5.3 qaytarildi"},
+    {"step": 6, "request": "Saytda tahrirlash va saqlash; faqat login qilganlar (superadmin)", "result": "Upstash Redis + api/* + login oynasi; ishlayapti"},
+    {"step": 7, "request": "Tasdiqlanmagan = 0.9, bajarildi = 1 ball", "result": "Umumiy 7% → 19%"},
+    {"step": 8, "request": "Vazifa qo'shish/o'chirish mumkinmi? (kod yozma)", "result": "Reja va savollar berildi, javob kutilmoqda"},
+    {"step": 9, "request": "React + bir vaqtda bir necha kishi tahrirlashi, yangilamasdan ko'rinishi (kod yozma)", "result": "Variantlar berildi, javob kutilmoqda"}
+  ],
+  "open_questions": {
+    "task_crud": [
+      "O'chirilgan vazifa raqamlari siljiydimi yoki o'zgarmaydimi? (tavsiya: o'zgarmasin)",
+      "To'liq o'chirish yoki arxiv? (tavsiya: arxiv)",
+      "Faqat vazifa qo'shish/o'chirishmi, yoki bo'lim va yo'nalish qo'shish ham?",
+      "Qo'shishda qisqa va to'liq nom ikkalasi so'ralsinmi?"
+    ],
+    "realtime_react": [
+      "Necha kishi tahrirlaydi; har biriga alohida login kerakmi (bo'lim rahbari faqat o'z yo'nalishini)?",
+      "Polling (3–5 s, hozirgi Vercel + Redis) yoki real-time xizmat (Liveblocks / Ably / Pusher)? Tavsiya: 2–3 kishi uchun polling",
+      "'Kim onlayn' ko'rsatilsinmi?",
+      "Vazifa qo'shish/o'chirish ham shu bosqichga kiradimi?"
+    ],
+    "recommended_fix_first": "Saqlashni vazifa darajasiga o'tkazish (har bir o'zgarish darhol, alohida maydon sifatida), shunda bir vaqtda tahrirlashda ma'lumot yo'qolmaydi"
+  }
+}
