@@ -3,5 +3,6 @@ node_modules/
 out/
 .env*.local
 data/local-state.json
+*.xlsx
 *.log
 .DS_Store

@@ -1,6 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { COL, COLL, ICON, ST, pc, score } from '../data/constants';
+import PARTICIPANTS from '../data/participants.json';
 import { countFor } from '../lib/scoring';
 import { wrap, trunc } from '../lib/text';
 import KpiRow from './KpiRow';
@@ -150,7 +151,7 @@ export default function DirectionView({ d, S, user, others, onToggleTask, onHove
         </div>
         {user && <div className="btns"><button className="btn" onClick={() => setAddingDirSection(true)}>+ Бўлим</button></div>}
       </div>
-      <KpiRow c={c} label="бажарилди" />
+      <KpiRow c={c} label="бажарилди" participants={PARTICIPANTS[d.k]} />
       <svg className="mm" viewBox={`0 0 ${W} ${H}`}>
         {lines}
         {groups}
