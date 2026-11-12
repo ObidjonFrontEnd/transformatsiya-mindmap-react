@@ -25,7 +25,7 @@ export default function KpiRow({ c, label, participants }) {
           <div className="members-card">
             <div className="members-head">
               <span className="members-title">
-                <i className="members-icon">👥</i> Ташкилий таркиб
+                <i className="members-icon">👥</i> Ташаббус гуруҳи
               </span>
             </div>
             <div className="members-body">
