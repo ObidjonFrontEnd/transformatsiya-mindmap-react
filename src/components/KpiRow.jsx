@@ -30,17 +30,17 @@ export default function KpiRow({ c, label, participants }) {
             </div>
             <div className="members-body">
               {participants.leader && (
-                <div className="member-row leader">
-                  <span className="role-tag leader-tag">Лидер</span>
-                  <span className="member-name leader-name">{participants.leader}</span>
+                <div className="member-item leader-item">
+                  <span className="member-role-badge leader">⭐ Лидер</span>
+                  <span className="leader-name">{participants.leader}</span>
                 </div>
               )}
               {participants.members && participants.members.length > 0 && (
-                <div className="member-row members-group">
-                  <span className="role-tag">Аъзолар</span>
-                  <div className="members-chips">
+                <div className="member-item team-item">
+                  <span className="member-role-badge">Аъзолар</span>
+                  <div className="member-chips-wrap">
                     {participants.members.map((name, i) => (
-                      <span className="member-chip" key={i}>
+                      <span className="person-chip" key={i}>
                         {name}
                       </span>
                     ))}
